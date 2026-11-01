@@ -10,13 +10,18 @@
   radius: (
     top-right: 15pt,
     bottom-left: 15pt,
-  ), 
+  ),
   stroke: rgb("#8a8a8a") + 1pt,
-  inset: 1cm, [
+  inset: 1cm,
+  [
+    #set text(weight: "bold")
+
     #grid(
-      columns: (auto),
-      rows: (auto),
-      [#image("../assets/Logo_KIT.svg", width: 115pt)],
+      columns: (50%, 50%),
+      rows: auto,
+      align: (left, right),
+      image("../assets/Logo_KIT.svg", width: 115pt),
+      image("../assets/IRL_Logo_Light_blue.svg", width: 130pt),
     )
 
     #pad(top: 75pt)[
@@ -30,8 +35,8 @@
     #pad(top: 45pt)[
       #align(center)[
         #block(width: 50%)[
-            #text(size: 12pt)[#thesisType #linebreak() of]
-          ]
+          #text(size: 12pt)[#thesisType #linebreak() of]
+        ]
       ]
     ]
 
@@ -43,54 +48,64 @@
 
     #pad(top: 30pt)[
       #align(center)[
-        #text(size: 12pt)[
-          at the Department of #department#linebreak()#institute
+        #text(size: 12pt, weight: "bold")[
+          KIT Department of #department
+          #linebreak()
+          #instituteOne
+          #linebreak()
+          #instituteTwo
         ]
       ]
     ]
 
     #pad(top: 50pt)[
-      #align(center,
-        [#grid(
-          columns: (auto, auto),
-          rows: (auto),
-          align: (left, left),
-          column-gutter: 5em,
-          row-gutter: 1em,
-          [#text(size: 12pt)[First Reviewer:]],
-          [#text(size: 12pt)[#reviewerOne]],
+      #align(center, [#grid(
+        columns: (auto, auto),
+        rows: auto,
+        align: (left, left),
+        column-gutter: 5em,
+        row-gutter: 1em,
+        [#text(size: 12pt)[First Reviewer:]],
+        [#text(size: 12pt)[#reviewerOne]],
 
-          { if reviewerTwo != none [#text(size: 12pt)[Second Reviewer:]] },
-          { if reviewerTwo != none [#text(size: 12pt)[#reviewerTwo]] },
+        { if reviewerTwo != none [#text(size: 12pt)[Second Reviewer:]] },
+        { if reviewerTwo != none [#text(size: 12pt)[#reviewerTwo]] },
 
-          grid.cell(colspan: 2, v(1em)),
+        grid.cell(colspan: 2, v(1em)),
 
-          {if advisorTwo == none [#text(size: 12pt)[Advisor:]] else [#text(size: 12pt)[First Advisor:]]},
-          [#text(size: 12pt)[#advisorOne]],
+        {
+          if advisorTwo == none [#text(size: 12pt)[Advisor:]] else [#text(
+            size: 12pt,
+          )[First Advisor:]]
+        },
+        [#text(size: 12pt)[#advisorOne]],
 
-          { if advisorTwo != none [#text(size: 12pt)[Second Advisor:]] },
-          { if advisorTwo != none [#text(size: 12pt)[#advisorTwo]] },
-        )]
-      )
+        { if advisorTwo != none [#text(size: 12pt)[Second Advisor:]] },
+        { if advisorTwo != none [#text(size: 12pt)[#advisorTwo]] },
+      )])
     ]
     #pad(top: 40pt)[
       #align(center)[
         #grid(
           columns: (auto, auto),
-          rows: (auto),
+          rows: auto,
           column-gutter: 2.5em,
           align: (left, right),
-          [Completion period:],
-          [#completionPeriod],
+          [Completion period:], [#completionPeriod],
         )
       ]
     ]
-  ]
+  ],
 )
 
 #block(inset: 5pt)[
   #text(
     font: "Liberation Sans",
-    size: 8pt
-  )[KIT – The Research University in the Helmholtz Association #h(1fr)] #text(font: "Liberation Sans", weight: "bold", size: 22pt)[www.kit.edu]
+    size: 8pt,
+    weight: "bold",
+  )[KIT – The Research University in the Helmholtz Association #h(1fr)] #text(
+    font: "Liberation Sans",
+    weight: "bold",
+    size: 10pt,
+  )[www.kit.edu]
 ]

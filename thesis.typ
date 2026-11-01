@@ -3,9 +3,9 @@
 
 #set document(title: title, author: author, keywords: keywords)
 
-#set page("a4",
-  background: if isDraft { rotate(24deg, text(150pt, fill: rgb("dedede66"))[*DRAFT*]) },
-)
+#set page("a4", background: if isDraft {
+  rotate(24deg, text(150pt, fill: rgb("dedede66"))[*DRAFT*])
+})
 
 // Title page
 #include "common/cover.typ"
@@ -34,11 +34,16 @@
 
 // Table of Contents
 #show outline.entry: outrageous.show-entry.with(
-  ..outrageous.presets.outrageous-toc,
-  fill: (none, line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))),
+  ..outrageous.presets.typst,
+  font-weight: ("bold", "bold"),
+  vspace: (1.5em, 1em),
+  fill: (
+    none,
+    line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted")),
+  ),
 )
 
-#text(size: 18pt, font: "Arial")[*Contents*]
+#text(size: 18pt, font: "Liberation Sans")[*Table of Contents*]
 #v(50pt)
 
 #outline(title: none, indent: auto)
@@ -59,15 +64,21 @@
 // Begin Content
 
 #let ht-first = state("page-first-section", [])
-#let ht-last  = state("page-last-section", [])
+#let ht-last = state("page-last-section", [])
 
 #set page(
   numbering: "1",
   header: context [
     #let loc = here()
     #let text = ""
-    #let first-heading = query(heading.where(level: 1)).find(h => h.location().page() == loc.page())
-    #let last-heading  = query(heading.where(level: 1)).rev().find(h => h.location().page() == loc.page())
+    #let first-heading = query(heading.where(level: 1)).find(h => (
+      h.location().page() == loc.page()
+    ))
+    #let last-heading = (
+      query(heading.where(level: 1))
+        .rev()
+        .find(h => h.location().page() == loc.page())
+    )
 
     #if not first-heading == none {
       ht-first.update([
@@ -93,10 +104,10 @@
         } else {
           align(right)[#text]
         },
-        line(length: 100%, stroke: 0.5pt)
+        line(length: 100%, stroke: 0.5pt),
       )
     ] else []
-  ]
+  ],
 )
 
 #counter(page).update(1)
@@ -115,14 +126,23 @@
 #set heading(numbering: "1.1")
 #show heading: it => [
   #set text(
-    weight: if it.level == 1 {"bold"} else if it.level == 2 {"bold"} else {"semibold"},
-    font: "Arial",
-    size: if it.level == 1 {18pt} else if it.level == 2 {16pt} else {14pt}
+    weight: if it.level == 1 { "bold" } else if it.level == 2 { "bold" } else {
+      "semibold"
+    },
+    font: "Liberation Sans",
+    size: if it.level == 1 { 18pt } else if it.level == 2 { 16pt } else {
+      14pt
+    },
   )
-  
-  #if it.level == 1 {pagebreak(weak: true, to: "odd"); v(2.5cm)} else if it.level == 3 {v(0.5em)}
+
+  #if it.level == 1 {
+    pagebreak(weak: true, to: "odd")
+    v(2.5cm)
+  } else if it.level == 3 { v(0.5em) }
   #block(it)
-  #if it.level == 1 {v(0.75em)} else if it.level == 2 {v(0.5em)} else {v(0.25em)}
+  #if it.level == 1 { v(0.75em) } else if it.level == 2 { v(0.5em) } else {
+    v(0.25em)
+  }
 ]
 
 #include "content.typ"
