@@ -22,7 +22,7 @@
 #include "common/statutory-declaration.typ"
 #pagebreak(to: "odd")
 
-// Begin numbering
+// Page numbering for ToC
 #set page(numbering: "i")
 #counter(page).update(1)
 
@@ -67,8 +67,18 @@
 #let ht-last = state("page-last-section", [])
 
 #set page(
-  numbering: "1",
+  numbering: (..nums) => context {
+    let chapter-starts = query(heading.where(level: 1)).filter(h => (
+      h.numbering != none and h.location().page() == here().page()
+    ))
+
+    if chapter-starts.len() > 0 {
+      [*#nums.pos().first()*]
+    }
+  },
   header: context [
+    #set text(weight: "bold")
+
     #let loc = here()
     #let text = ""
     #let first-heading = query(heading.where(level: 1)).find(h => (
@@ -86,7 +96,7 @@
       ])
 
       ht-last.update([
-        #counter(heading).at(last-heading.location()).at(0) #last-heading.body
+        Chapter #counter(heading).at(last-heading.location()).at(0) - #last-heading.body
       ])
 
       // if one or more headings on the page, do not display header
@@ -100,9 +110,17 @@
       #stack(
         spacing: 0.5em,
         if calc.even(loc.page()) {
-          align(left)[#text]
+          stack(
+            dir: ltr,
+            align(left)[#counter(page).get().first()],
+            align(right)[#text],
+          )
         } else {
-          align(right)[#text]
+          stack(
+            dir: ltr,
+            align(left)[#text],
+            align(right)[#counter(page).get().first()],
+          )
         },
         line(length: 100%, stroke: 0.5pt),
       )
@@ -123,7 +141,7 @@
   #c.separator#c.body
 ]
 
-#set heading(numbering: "1.1")
+#set heading(numbering: "1.")
 #show heading: it => [
   #set text(
     weight: if it.level == 1 { "bold" } else if it.level == 2 { "bold" } else {
@@ -135,13 +153,26 @@
     },
   )
 
+  // "Chapter <num>"
   #if it.level == 1 {
     pagebreak(weak: true, to: "odd")
-    v(2.5cm)
-  } else if it.level == 3 { v(0.5em) }
-  #block(it)
-  #if it.level == 1 { v(0.75em) } else if it.level == 2 { v(0.5em) } else {
-    v(0.25em)
+    v(3cm)
+
+    // for `bibliography` to now show `Chapter <num>`
+    if it.numbering != none {
+      text(fill: gray)[Chapter #counter(heading).display("1")]
+    }
+  }
+
+  // Displaying header
+  #if it.level == 1 {
+    block(
+      text(it.body, size: 1.2em),
+      above: 2em,
+      below: 3.5em,
+    )
+  } else {
+    block(it, above: 3em, below: 2em)
   }
 ]
 
