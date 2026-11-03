@@ -1,6 +1,6 @@
 #let isDraft = true
 #let author = "Petra Musterfrau"
-#let title = [Guarded Type Theory - An Overview]
+#let title = [Something about Robots]
 #let thesisType = [Bachelor's Thesis]
 #let keywords = (
   "Robots",
