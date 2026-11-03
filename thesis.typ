@@ -29,7 +29,7 @@
 #set par(justify: true)
 
 // Abstract
-#include "abstract.typ"
+#include "common/abstract.typ"
 #pagebreak(to: "odd")
 
 // Table of Contents
@@ -67,13 +67,14 @@
 #let ht-last = state("page-last-section", [])
 
 #set page(
-  numbering: (..nums) => context {
+  numbering: "1",
+  footer: context {
     let chapter-starts = query(heading.where(level: 1)).filter(h => (
       h.numbering != none and h.location().page() == here().page()
     ))
 
     if chapter-starts.len() > 0 {
-      [*#nums.pos().first()*]
+      strong(counter(page).display("1"))
     }
   },
   header: context [
@@ -132,6 +133,11 @@
 
 #set text(size: 11pt)
 #set par(justify: true)
+#show par: it => [
+  #v(1em)
+  #it
+]
+
 #show heading.where(level: 1): set heading(supplement: [Chapter])
 #set figure(gap: 1em)
 #show figure.caption: c => [
@@ -141,7 +147,7 @@
   #c.separator#c.body
 ]
 
-#set heading(numbering: "1.")
+#set heading(numbering: (..nums) => nums.pos().map(str).join("."))
 #show heading: it => [
   #set text(
     weight: if it.level == 1 { "bold" } else if it.level == 2 { "bold" } else {
@@ -156,7 +162,7 @@
   // "Chapter <num>"
   #if it.level == 1 {
     pagebreak(weak: true, to: "odd")
-    v(3cm)
+    v(5cm)
 
     // for `bibliography` to now show `Chapter <num>`
     if it.numbering != none {
@@ -169,11 +175,14 @@
     block(
       text(it.body, size: 1.2em),
       above: 2em,
-      below: 3.5em,
+      below: 2.5em,
     )
   } else {
-    block(it, above: 3em, below: 2em)
+    block(it, above: 2em, below: 1em)
   }
 ]
+
+#set list(spacing: 2em)
+#show list: it => block(it, above: 1em, inset: 1.8em)
 
 #include "content.typ"

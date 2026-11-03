@@ -3,9 +3,7 @@
 #let title = [Guarded Type Theory - An Overview]
 #let thesisType = [Bachelor's Thesis]
 #let keywords = (
-  "Natural Deduction",
-  "proofs as programs",
-  "Curry-Howard isomorphism",
+  "Robots",
 )
 
 #let reviewerOne = [Prof. A.]

@@ -1,12 +1,7 @@
-= Title A
-#lorem(200)
-
-= Title B
-#lorem(50)
-== Title C
-#lorem(1200)
-
-@loefTruthProposition
-
-
-#bibliography("bibliography.yml", style: "ieee", full: false)
+#include "chapters/introduction.typ"
+#include "chapters/fundamentals.typ"
+#include "chapters/related_work.typ"
+#include "chapters/example_chapter.typ"
+#include "chapters/template_how_to.typ"
+#include "chapters/evaluation.typ"
+#include "chapters/conclusion_and_future_work.typ"
